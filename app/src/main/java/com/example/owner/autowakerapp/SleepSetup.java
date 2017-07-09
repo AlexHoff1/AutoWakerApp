@@ -1,5 +1,6 @@
 package com.example.owner.autowakerapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -40,6 +41,13 @@ public class SleepSetup extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void onButtonClick(View view) {
+        if (view.getId()==R.id.button){
+            Intent i = new Intent(this, days_to_wake_up.class);
+            startActivity(i);
+        }
     }
 
     @Override
