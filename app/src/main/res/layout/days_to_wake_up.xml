@@ -12,8 +12,11 @@
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="84dp" />
+        tools:layout_editor_absoluteY="84dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/button4"
@@ -31,9 +34,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/guideline"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="273dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="111dp" />
-
+        app:layout_constraintGuide_begin="96dp" />
 
 </android.support.constraint.ConstraintLayout>
