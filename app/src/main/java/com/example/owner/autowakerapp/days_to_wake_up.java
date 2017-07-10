@@ -18,7 +18,7 @@ public class days_to_wake_up extends Activity {
         setContentView(R.layout.days_to_wake_up);
     }
     public void onButtonClick(View view) {
-        if (view.getId() == R.id.button3){
+        if (view.getId() == R.id.button4){
             Intent i = new Intent(this, SleepSetup.class);
             startActivity(i);
         }

@@ -18,7 +18,7 @@ public class BlutoothConnection extends Activity {
     }
 
     public void onButtonClick(View view) {
-        if (view.getId() == R.id.button3){
+        if (view.getId() == R.id.button5){
             Intent i = new Intent(this, SleepSetup.class);
             startActivity(i);
         }

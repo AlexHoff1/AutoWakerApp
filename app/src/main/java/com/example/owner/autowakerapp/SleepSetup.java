@@ -45,6 +45,7 @@ public class SleepSetup extends AppCompatActivity
     }
 
     public void onButtonClick(View view) {
+        Log.d("button information", "" + view.getId());
         if (view.getId() == R.id.button) {
             Intent i = new Intent(this, BlutoothConnection.class);
             startActivity(i);
