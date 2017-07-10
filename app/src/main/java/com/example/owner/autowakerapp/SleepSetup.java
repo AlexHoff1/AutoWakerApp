@@ -45,12 +45,14 @@ public class SleepSetup extends AppCompatActivity
     }
 
     public void onButtonClick(View view) {
-        Log.d("debug", "Button was clicked.");
-        //if (view.getId()==R.id.button){
-            Log.d("debug", "Button was pressed.");
+        if (view.getId() == R.id.button){
+            Intent i = new Intent(this, BlutoothConnection.class);
+            startActivity(i);
+        }
+        else if (view.getId() == R.id.button2){
             Intent i = new Intent(this, days_to_wake_up.class);
             startActivity(i);
-        //}
+        }
     }
 
     @Override
