@@ -45,18 +45,19 @@ public class SleepSetup extends AppCompatActivity
     }
 
     public void onButtonClick(View view) {
-        Log.d("button information", "" + view.getId());
         if (view.getId() == R.id.syncButton) {
             Intent i = new Intent(this, BlutoothConnection.class);
             startActivity(i);
         }
         else if (view.getId() == R.id.dateButton) {
+            Log.d("button information", "date button was clicked...");
             Intent i = new Intent(this, DaysToWakeUp.class);
             startActivity(i);
         }
         else if (view.getId() == R.id.homeButton) {
         }
         else if (view.getId() == R.id.timeButton) {
+            Log.d("button information", "time button was clicked...");
             Intent i = new Intent(this, TimeForcer.class);
             startActivity(i);
         }
