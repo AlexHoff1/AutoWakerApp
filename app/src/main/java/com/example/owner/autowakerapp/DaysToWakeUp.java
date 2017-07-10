@@ -7,18 +7,18 @@ import android.util.Log;
 import android.view.View;
 
 /**
- * Created by Owner on 7/8/2017.
+ * Created by Owner on 7/9/2017.
  */
 
-public class days_to_wake_up extends Activity {
-    @Override
+public class DaysToWakeUp extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("debug", "Testing.");
         setContentView(R.layout.days_to_wake_up);
     }
+
     public void onButtonClick(View view) {
-        if (view.getId() == R.id.button4){
+        if (view.getId() == R.id.homeButton){
             Intent i = new Intent(this, SleepSetup.class);
             startActivity(i);
         }
