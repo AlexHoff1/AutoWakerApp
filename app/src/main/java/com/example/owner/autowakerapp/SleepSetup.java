@@ -51,7 +51,7 @@ public class SleepSetup extends AppCompatActivity
             startActivity(i);
         }
         else if (view.getId() == R.id.dateButton) {
-            Intent i = new Intent(this, days_to_wake_up.class);
+            Intent i = new Intent(this, DaysToWakeUp.class);
             startActivity(i);
         }
         else if (view.getId() == R.id.homeButton) {
