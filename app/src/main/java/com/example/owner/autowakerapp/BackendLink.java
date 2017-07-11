@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.io.*;
 import java.net.*;
+import java.nio.*;
 
 /**
  * Created by Owner on 7/9/2017.
@@ -17,7 +18,8 @@ public class BackendLink {
     }
     public void getWakeTime(){
         try {
-            URL base = new URL(WEBSITE_URL);
+            String fullURL = retrieveFullURL();
+            URL base = new URL(fullURL);
             URLConnection opened_link = base.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(opened_link.getInputStream()));
             String inputLine;
@@ -31,6 +33,16 @@ public class BackendLink {
             Log.d("Sleep", "Not sure why, but the URL is invlaid. Better check that out!");
         } catch (IOException e) {
             Log.d("Sleep", "Not sure why, but there was an IOException.");
+        } catch (Exception e) {
+            Log.d("Sleep", "Unknown exception occured.");
         }
+    }
+
+    public String retrieveFullURL() {
+        String date = "";
+        String current_user = "";
+        //Path filePath = Paths.get(WEBSITE_URL, "sleep", current_user, date);
+        //return filePath.toString();
+        return "";
     }
 }
