@@ -61,6 +61,10 @@ public class SleepSetup extends AppCompatActivity
             Intent i = new Intent(this, TimeForcer.class);
             startActivity(i);
         }
+        else if (view.getId() == R.id.minHoursButton) {
+            Intent i = new Intent(this, MinHours.class);
+            startActivity(i);
+        }
     }
 
     @Override
