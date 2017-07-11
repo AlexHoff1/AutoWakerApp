@@ -6,18 +6,24 @@ package com.example.owner.autowakerapp;
 
 public class MinHours {
 
-    private int minHours = 5;
+    private double minHours = 5;
+    private int maximumMinHours = 12;
+    private int minimumMinHours = 5;
 
-    public int getMinHours() {
-        return 5;
+    public double getMinHours() {
+        return minHours;
     }
 
-    public void setMinHours( int minHours ) {
-        if (minHours >= 12) {
-            // TODO: Pass message back up
-        } else if (minHours >= 5){
+    public void setMinHours( double minHours ) {
+        if (hoursInRange(minHours)){
             this.minHours = minHours;
+        } else {
+            // TODO: Send message back up.
         }
 
+    }
+
+    private boolean hoursInRange(double minHours){
+        return ( ( minHours >= minimumMinHours ) && (minHours <= maximumMinHours) );
     }
 }
