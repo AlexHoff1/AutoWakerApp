@@ -12,11 +12,11 @@ import java.nio.*;
 
 public class BackendLink {
 
-    private static final String WEBSITE_URL = "www.yahoo.com";
-    public void send(){
+    private static final String WEBSITE_URL = "https://sites.google.com/a/umn.edu/autowaker/";
+    public void send() {
 
     }
-    public void getWakeTime(){
+    public void getWakeTime() {
         try {
             String fullURL = retrieveFullURL();
             URL base = new URL(fullURL);
