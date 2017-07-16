@@ -1,5 +1,6 @@
 package com.example.owner.autowakerapp;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.*;
@@ -8,58 +9,75 @@ import java.nio.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.json.*;
 
 /**
  * Created by Owner on 7/9/2017.
  */
 
-public class BackendLink {
+public class BackendLink extends AsyncTask<URL, Integer, String> {
 
-    private static final String WEBSITE_URL = "https://sites.google.com/a/umn.edu/autowaker/";
-    public void send() {
+    private String desired;
+    private String result = "";
 
+    public BackendLink(String desired){
+        this.desired = desired;
     }
-    public void getWakeTime() {
-        try {
-            String full_url = retrieveFullURL();
-            URL base = new URL(full_url);
-            URLConnection opened_link = base.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(opened_link.getInputStream()));
-            String input_line;
-            while ((input_line = in.readLine()) != null){
-                Log.d("Sleep", "Information was retrieved.");
-                // TODO: Add this wake time to a config file somewhere.
-                System.out.println(in.readLine());
+
+    // TODO: Massive patchwork is needed here.
+    protected String doInBackground(URL... urls) {
+        int count = urls.length;
+        BufferedReader br = null;
+        long totalSize = 0;
+        for (int i = 0; i < count; i++) {
+            Log.i("URL", "next url is: " + urls[i].toString());
+            try {
+                URLConnection conn = urls[i].openConnection();
+                Log.i("URL", urls[i].toString());
+                br = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+                String content = "";
+                String line = "";
+                while((line = br.readLine()) != null) {
+                    Log.i("line", "Line is: " + line);
+                    content += line;
+                }
+                Log.i("Content", "Content is: " + content);
+                JSONObject obj = new JSONObject(content);
+                this.result = obj.getString(this.desired);
+                Log.i("Time", this.result);
+                br.close();
+                return this.result;
+            } catch (IOException e) {
+                Log.e("URL", "Opening URL failed." + e.toString());
+            } catch (org.json.JSONException e) {
+                Log.e("URL", "Result was not a JSON object." + e.toString());
+                Log.i("URL", "Url was: " + urls[i].toString());
             }
-            in.close();
-
-        } catch (MalformedURLException e) {
-            Log.e("Sleep", "Not sure why, but the URL is invlaid. Better check that out!");
-        } catch (IOException e) {
-            Log.e("Sleep", "Not sure why, but there was an IOException.");
-        } catch (Exception e) {
-            Log.e("Sleep", "Unknown exception occured.");
+            try {
+                br.close();
+            } catch (Exception e) {
+                Log.i("Interesting...", "Couldn't close the reader.");
+            }
+            return this.result;
         }
+        return this.result;
     }
 
-    private String retrieveFullURL() {
-        String date = getCurrentDate();
-        String current_user = getCurrentUser();
-        //Path filePath = Paths.get(WEBSITE_URL, "sleep", current_user, date);
-        //return filePath.toString();
-        return "";
+    protected void onPostExecute(String result) {
+        Log.i("Result", "The result is: " + result);
     }
 
-    private String getCurrentDate() {
-        DateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
-        Date date = new Date();
-        String date_string = date_format.format(date);
-        return date_string;
+    public String getResult(){
+        try {
+            String test = doInBackground(new URL("http://192.168.56.1:8888/?date=2017/07/15&user=5T23R6"));
+            Log.i("Interesting", "The result of calling doInBackground is: " + test);
+        } catch (Exception e) {
+            Log.e("Result", "Not sure what happened here.");
+        }
+        return this.result;
     }
 
-    private String getCurrentUser() {
-        return "";
-    }
 
 
 }
