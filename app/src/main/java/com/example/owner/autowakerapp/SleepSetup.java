@@ -66,15 +66,12 @@ public class SleepSetup extends AppCompatActivity
     public void onButtonClick(View view) {
         int id = view.getId();
         try {
-            this.pyromania.stop();
-            this.pyromania = MediaPlayer.create(this, R.raw.daycore_pyromania);
-            if ( this.pyromania.getCurrentPosition() == 0 ) {
-                this.pyromania.start();
-            }
+            new Thread(new NoiseMaker(this)).start();
         } catch (Exception e) {
             Log.d("bug", "bug on click: " + e.toString());
         }
-        if (id!=-1) {
+        Log.i("Interesting problem", "We made it here apparently.");
+        if (id != 0) {
             Intent i = new Intent(this, SleepSetup.class);
             if (id == R.id.syncButton) {
                 i = new Intent(this, BlutoothConnection.class);
@@ -82,21 +79,14 @@ public class SleepSetup extends AppCompatActivity
                 i = new Intent(this, DaysToWakeUp.class);
             } else if (id == R.id.homeButton) {
                 try {
-                    Log.d("Time", "wellll: " + timeGetter.get());
-                } catch (java.util.concurrent.ExecutionException e) {
-                    Log.e("Error", "thread didn't execute " + e.toString());
-                } catch (Exception e) {
-                    Log.e("Error", "Unknown exception " + e.toString());
-                }
-                // Make this run in background.
-                BackgroundRunner b = new BackgroundRunner("wakeTime");
-                i = new Intent(this, BackgroundRunner.class);
-                try {
+                    Log.i("Parse", "Trying to parse.");
                     i.setData(Uri.parse("http://192.168.56.1:8888/?date=2017/07/15&user=5T23R6"));
+                    Log.i("Parse", "Parsed.");
                 } catch (Exception e) {
                     Log.e("background", "Starting background failed." + e.toString());
                 }
-                this.startService(i);
+                Log.i("Threading", "Making a new thread.");
+                new Thread(new WorkerThread()).start();
                 return;
             } else if (id == R.id.timeButton) {
                 i = new Intent(this, TimeForcer.class);
