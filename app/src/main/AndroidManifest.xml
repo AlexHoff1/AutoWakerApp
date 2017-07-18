@@ -26,12 +26,17 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".TimeForcer">
+        <activity android:name=".DaysToWakeUp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".DaysToWakeUp">
+        <activity android:name=".MinHours">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TimeForcer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
