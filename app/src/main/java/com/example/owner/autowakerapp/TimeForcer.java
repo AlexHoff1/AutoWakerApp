@@ -37,7 +37,6 @@ public class TimeForcer extends Activity {
     public void onButtonClick(View view) {
         if (view.getId() == R.id.homeButton) {
             Intent i = new Intent(this, SleepSetup.class);
-            finishActivity(0);
             finish();
         }
     }
