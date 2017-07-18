@@ -66,7 +66,7 @@ public class SleepSetup extends AppCompatActivity
     public void onButtonClick(View view) {
         int id = view.getId();
         try {
-            new Thread(new NoiseMaker(this));
+            new Thread(new NoiseMaker(this)).start();
         } catch (Exception e) {
             Log.d("bug", "bug on click: " + e.toString());
         }
