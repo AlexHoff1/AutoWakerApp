@@ -66,7 +66,7 @@ public class SleepSetup extends AppCompatActivity
     public void onButtonClick(View view) {
         int id = view.getId();
         try {
-            new Thread(new NoiseMaker(this)).start();
+            new Thread(new NoiseMaker(this));
         } catch (Exception e) {
             Log.d("bug", "bug on click: " + e.toString());
         }
@@ -86,14 +86,14 @@ public class SleepSetup extends AppCompatActivity
                     Log.e("background", "Starting background failed." + e.toString());
                 }
                 Log.i("Threading", "Making a new thread.");
-                new Thread(new WorkerThread()).start();
+                new Thread(new WorkerThread());
                 return;
             } else if (id == R.id.timeButton) {
                 i = new Intent(this, TimeForcer.class);
             } else if (id == R.id.minHoursButton) {
                 i = new Intent(this, MinHours.class);
             }
-            startActivityForResult(i, 0);
+            startActivityForResult(i, 100);
         } else {
             Log.d("Interesting", "ID was actually negative >.>");
         }
