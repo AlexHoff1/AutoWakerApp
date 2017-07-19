@@ -28,6 +28,7 @@ public class NoiseMaker implements Runnable {
             }
         } else {
             this.pyromania = MediaPlayer.create(sleep, R.raw.daycore_pyromania);
+            this.playing = true;
             this.pyromania.start();
         }
     }
