@@ -12,13 +12,13 @@ public class NoiseMaker implements Runnable {
 
     private static MediaPlayer pyromania;
     private SleepSetup sleep = null;
-    private static boolean playing = false;
+    private boolean playing;
     public NoiseMaker(SleepSetup a){
         this.sleep = a;
     }
     @Override
     public void run() {
-        //android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         if (this.playing) {
             try {
                 this.pyromania.stop();
@@ -28,7 +28,6 @@ public class NoiseMaker implements Runnable {
             }
         } else {
             this.pyromania = MediaPlayer.create(sleep, R.raw.daycore_pyromania);
-            this.playing = true;
             this.pyromania.start();
         }
     }
