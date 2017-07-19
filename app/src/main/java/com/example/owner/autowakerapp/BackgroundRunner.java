@@ -14,18 +14,23 @@ import java.util.Calendar;
  */
 
 public class BackgroundRunner extends IntentService implements Runnable {
+    public BackgroundRunner() {
+        super("BackgroundRunner");
+    }
+
     public BackgroundRunner(String name) {
         super(name);
         // TODO Auto-generated constructor stub
     }
 
+    /*
+     * Used to make this class runnable. Starts the service as a backend.
+     */
     public void run() {
+        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
         this.onHandleIntent(new Intent());
     }
 
-    public BackgroundRunner() {
-        super("BackgroundRunner");
-    }
 
     public int onStartCommand() {
         this.onHandleIntent(new Intent());
@@ -34,27 +39,12 @@ public class BackgroundRunner extends IntentService implements Runnable {
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-        // Gets data from the incoming Intent
-        String dataString = workIntent.getDataString();
-        // Do work here, based on the contents of dataString
-        BackendLink test = new BackendLink("wakeTime");
+
+        BackendLink backendLink = new BackendLink("wakeTime");
         while (true) {
-            tryGetResult(test);
+            tryGetResult(backendLink);
             // TODO: Use datetime objects and DT comparison similar to python.
-            String currentTime = getCurrentTime();
-            // TODO: Clean up the problem here. This currently just waits for result in a super inefficient way. :(.
-            waitUntilResultExists(currentTime, test);
-            // TODO: Seriously patch this up. It is just checking if the time is less than currently.
-            while (currentTime.compareTo(test.getResult()) < 0 || currentTime.compareTo("12:00:00") > 0) {
-                try {
-                    // Sleep for two minutes
-                    Log.i("Sleep", "Going to sleep for a bit. Current time is about: " + currentTime);
-                    Thread.sleep(120 * 1000);
-                    currentTime = getCurrentTime();
-                } catch (Exception e) {
-                    Log.i("Sleep", "Sleep interupted.");
-                }
-            }
+            startQuerying(backendLink);
             playMusic();
             // At this point make some noise goes off
         }
@@ -96,7 +86,23 @@ public class BackgroundRunner extends IntentService implements Runnable {
     private void playMusic() {
         // TODO: Arbitrary choice of music?
         final MediaPlayer pyromania = MediaPlayer.create(this, R.raw.daycore_pyromania);
-        // TODO: find a way to stop the song >.<....
         pyromania.start();
+    }
+
+    private void startQuerying(BackendLink backendLink) {
+        String currentTimeString = getCurrentTime();
+        // TODO: Clean up the problem here. This currently just waits for result in a super inefficient way. :(.
+        waitUntilResultExists(currentTimeString, backendLink);
+        // TODO: Seriously patch this up. It is just checking if the time is less than currently.
+        while (currentTimeString.compareTo(backendLink.getResult()) < 0 || currentTimeString.compareTo("12:00:00") > 0) {
+            try {
+                // Sleep for two minutes
+                Log.i("Sleep", "Going to sleep for a bit. Current time is about: " + currentTimeString);
+                Thread.sleep(120 * 1000);
+                currentTimeString = getCurrentTime();
+            } catch (Exception e) {
+                Log.i("Sleep", "Sleep interupted.");
+            }
+        }
     }
 }
