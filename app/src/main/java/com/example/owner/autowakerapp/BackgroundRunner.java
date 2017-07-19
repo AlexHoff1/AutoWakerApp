@@ -13,10 +13,14 @@ import java.util.Calendar;
  * Created by Owner on 7/15/2017.
  */
 
-public class BackgroundRunner extends IntentService {
+public class BackgroundRunner extends IntentService implements Runnable {
     public BackgroundRunner(String name) {
         super(name);
         // TODO Auto-generated constructor stub
+    }
+
+    public void run() {
+        this.onHandleIntent(new Intent());
     }
 
     public BackgroundRunner() {
