@@ -86,7 +86,7 @@ public class SleepSetup extends AppCompatActivity
                     Log.e("background", "Starting background failed." + e.toString());
                 }
                 Log.i("Threading", "Making a new thread.");
-                new Thread(new WorkerThread());
+                new Thread(new BackgroundRunner());
                 return;
             } else if (id == R.id.timeButton) {
                 i = new Intent(this, TimeForcer.class);
