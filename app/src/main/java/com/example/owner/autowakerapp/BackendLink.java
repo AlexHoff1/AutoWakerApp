@@ -28,21 +28,9 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
     protected String doInBackground(URL... urls) {
         int count = urls.length;
         BufferedReader br = null;
-        long totalSize = 0;
         for (int i = 0; i < count; i++) {
-            Log.i("URL", "next url is: " + urls[i].toString());
             try {
-                URLConnection conn = urls[i].openConnection();
-                Log.i("URL", urls[i].toString());
-                br = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream()));
-                String content = "";
-                String line = "";
-                while((line = br.readLine()) != null) {
-                    Log.i("line", "Line is: " + line);
-                    content += line;
-                }
-                Log.i("Content", "Content is: " + content);
+                String content = readData(urls[i]);
                 JSONObject obj = new JSONObject(content);
                 this.result = obj.getString(this.desired);
                 Log.i("Time", this.result);
@@ -51,13 +39,13 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
             } catch (IOException e) {
                 Log.e("URL", "Opening URL failed." + e.toString());
             } catch (org.json.JSONException e) {
-                Log.e("URL", "Result was not a JSON object." + e.toString());
-                Log.i("URL", "Url was: " + urls[i].toString());
+                Log.e("JSON", "Result was not a JSON object." + e.toString());
+                Log.i("JSON", "Url was: " + urls[i].toString());
             }
             try {
                 br.close();
             } catch (Exception e) {
-                Log.i("Interesting...", "Couldn't close the reader.");
+                Log.i("Reader", "Couldn't close the reader.");
             }
             return this.result;
         }
@@ -76,6 +64,47 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
             Log.e("Result", "Not sure what happened here.");
         }
         return this.result;
+    }
+
+    private String readData(URL url) {
+        BufferedReader br;
+        URLConnection conn;
+        try {
+            conn = url.openConnection();
+        } catch(IOException e) {
+            Log.e("Connection", "Opening the connection failed with: " + e.toString());
+            return "";
+        } catch (Exception e) {
+            Log.e("Connection", "Unknown exception occured when connecting with: " + e.toString());
+            return "";
+        }
+        Log.i("URL", url.toString());
+        try {
+            br = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()));
+        } catch(IOException e) {
+            Log.e("Stream", "Opening the input stream failed with: " + e.toString());
+            return "";
+        } catch(Exception e) {
+            Log.e("Stream", "Unknown exception occured with: " + e.toString());
+            return "";
+        }
+        String content = "";
+        String line = "";
+        try {
+            while ((line = br.readLine()) != null) {
+                Log.i("line", "Line is: " + line);
+                content += line;
+            }
+        } catch (IOException e) {
+            Log.e("Reading", "Reading from the connection caused an error: " + e.toString());
+            return content;
+        } catch (Exception e) {
+            Log.e("Reading", "Unknown error occured while reading with: " + e.toString());
+            return content;
+        }
+        Log.i("Content", "Content is: " + content);
+        return content;
     }
 
 
