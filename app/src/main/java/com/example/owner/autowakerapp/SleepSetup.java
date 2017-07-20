@@ -57,7 +57,7 @@ public class SleepSetup extends AppCompatActivity
             timeGetter = new BackendLink("wakeTime");
             timeGetter.execute(new URL(retrieveFullURL()));
         } catch (Exception e) {
-            Log.e("URL", "Some weird error happened.");
+            Log.e("Sleep", "Error occurred while creating a backendlink: " + e.toString());
         }
         BackgroundRunner testing = new BackgroundRunner();
         this.pyromania = MediaPlayer.create(this, R.raw.daycore_pyromania);
@@ -68,9 +68,8 @@ public class SleepSetup extends AppCompatActivity
         try {
             new Thread(new NoiseMaker(this)).start();
         } catch (Exception e) {
-            Log.d("bug", "bug on click: " + e.toString());
+            Log.e("Thread", "Creating thread for noise maker failed with: " + e.toString());
         }
-        Log.i("Interesting problem", "We made it here apparently.");
         if (id != 0) {
             Intent i = new Intent(this, SleepSetup.class);
             if (id == R.id.syncButton) {
@@ -79,14 +78,11 @@ public class SleepSetup extends AppCompatActivity
                 i = new Intent(this, DaysToWakeUp.class);
             } else if (id == R.id.homeButton) {
                 try {
-                    Log.i("Parse", "Trying to parse.");
                     i.setData(Uri.parse("http://192.168.56.1:8888/?date=2017/07/15&user=5T23R6"));
-                    Log.i("Parse", "Parsed.");
                 } catch (Exception e) {
                     Log.e("background", "Starting background failed." + e.toString());
                 }
-                Log.i("Threading", "Making a new thread.");
-                new Thread(new BackgroundRunner());
+                new Thread(new BackgroundRunner()).start();
                 return;
             } else if (id == R.id.timeButton) {
                 i = new Intent(this, TimeForcer.class);
@@ -95,7 +91,7 @@ public class SleepSetup extends AppCompatActivity
             }
             startActivityForResult(i, 100);
         } else {
-            Log.d("Interesting", "ID was actually negative >.>");
+            Log.d("Sleep", "ID was 0.");
         }
     }
 

@@ -12,8 +12,8 @@ import android.view.View;
 
 public class BlutoothConnection extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("Blutooth", "Opened the blutooth connection page.");
         super.onCreate(savedInstanceState);
-        Log.d("debug", "Testing.");
         setContentView(R.layout.blutooth_connection);
     }
 

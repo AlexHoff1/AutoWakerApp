@@ -17,6 +17,7 @@ public class MinHours extends Activity{
     private int minimumMinHours = 5;
 
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("MinHours", "Opened the MinHours setting page.");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.min_hours);
     }

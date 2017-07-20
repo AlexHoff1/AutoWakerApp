@@ -24,7 +24,7 @@ public class BackgroundRunner extends IntentService implements Runnable {
     }
 
     /*
-     * Used to make this class runnable. Starts the service as a backend.
+     * Used to make this class runnable. Starts checking the backend service for the time.
      */
     public void run() {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
@@ -41,19 +41,23 @@ public class BackgroundRunner extends IntentService implements Runnable {
     protected void onHandleIntent(Intent workIntent) {
 
         BackendLink backendLink = new BackendLink("wakeTime");
-        while (true) {
-            tryGetResult(backendLink);
-            // TODO: Use datetime objects and DT comparison similar to python.
+        tryGetResult(backendLink);
+
+        Log.i("Background", "Link established, trying to run.");
+        try {
+            // Continues to execute until the time is met.
             startQuerying(backendLink);
+
             playMusic();
-            // At this point make some noise goes off
+        } catch (Exception e) {
+            Log.e("Background", "Unknown exception occured while trying to retrieve the time");
         }
     }
     private void tryGetResult(BackendLink aLinkToServer){
         try {
             aLinkToServer.getResult();
         } catch (Exception e) {
-            Log.e("Background", "Something wierd happened!");
+            Log.e("Background", "Getting the result from the backend failed.");
         }
     }
 
@@ -64,19 +68,19 @@ public class BackgroundRunner extends IntentService implements Runnable {
         return currentTime;
     }
 
-    private void waitUntilResultExists(String currentTime, BackendLink aLink) {
-        Log.i("result", "Waiting until result is here.");
+    private void waitUntilResultExists(String currentTime, BackendLink backendLink) {
+        Log.i("Background", "Waiting until result is here.");
         while(true){
             try {
-                int result = currentTime.compareTo(aLink.getResult());
+                int result = currentTime.compareTo(backendLink.getResult());
                 break;  // Result isn't null since that didn't toss an erorr.
             } catch (Exception e) {
-                Log.i("result", "Result doesn't exist yet, going to sleep.");
+                Log.i("Background", "Result doesn't exist yet, stalling the thread.");
                 try {
                     // TODO: Find more useful stuff to do and optimize the ping time.
                     Thread.sleep(120);
-                } catch (Exception e2 ){
-                    Log.i("Sleep", "Interupted: " + e2.toString());
+                } catch (Exception e2) {
+                    Log.i("Background", "Sleep was interrupted " + e2.toString());
                 }
             }
         }
@@ -89,7 +93,8 @@ public class BackgroundRunner extends IntentService implements Runnable {
         pyromania.start();
     }
 
-    private void startQuerying(BackendLink backendLink) {
+    private int startQuerying(BackendLink backendLink) {
+        // TODO: Use datetime objects and DT comparison similar to python.
         String currentTimeString = getCurrentTime();
         // TODO: Clean up the problem here. This currently just waits for result in a super inefficient way. :(.
         waitUntilResultExists(currentTimeString, backendLink);
@@ -97,12 +102,13 @@ public class BackgroundRunner extends IntentService implements Runnable {
         while (currentTimeString.compareTo(backendLink.getResult()) < 0 || currentTimeString.compareTo("12:00:00") > 0) {
             try {
                 // Sleep for two minutes
-                Log.i("Sleep", "Going to sleep for a bit. Current time is about: " + currentTimeString);
+                Log.i("Background", "Stalling. Current time is about: " + currentTimeString);
                 Thread.sleep(120 * 1000);
                 currentTimeString = getCurrentTime();
             } catch (Exception e) {
-                Log.i("Sleep", "Sleep interupted.");
+                Log.i("Background", "Sleep was interrupted " + e.toString());
             }
         }
+        return 0;
     }
 }

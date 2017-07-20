@@ -20,14 +20,13 @@ public class TimeForcer extends Activity {
     TimePicker simpleTimePicker;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("debug", "Testing.");
         setContentView(R.layout.time_forcer);
         time = (TextView) findViewById(R.id.time);
         simpleTimePicker = (TimePicker)findViewById(R.id.timePicker); //initiate a time picker
         simpleTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             //@Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                Log.d("Time", hourOfDay + " " + minute);
+                Log.i("Time", hourOfDay + " " + minute);
                 Toast.makeText(getApplicationContext(), hourOfDay + "  " + minute, Toast.LENGTH_SHORT).show();
                 //time.setText("Time is :: " + hourOfDay + " : " + minute); // set the current time in text view
             }

@@ -12,7 +12,7 @@ public class NoiseMaker implements Runnable {
 
     private static MediaPlayer pyromania;
     private SleepSetup sleep = null;
-    private boolean playing;
+    private static boolean playing;
     public NoiseMaker(SleepSetup a){
         this.sleep = a;
     }
@@ -24,7 +24,7 @@ public class NoiseMaker implements Runnable {
                 this.pyromania.stop();
                 this.playing = false;
             } catch (Exception e) {
-                Log.i("Noise", "Object not yet created.");
+                Log.i("NoiseMaker", "Object not yet created.");
             }
         } else {
             this.pyromania = MediaPlayer.create(sleep, R.raw.daycore_pyromania);

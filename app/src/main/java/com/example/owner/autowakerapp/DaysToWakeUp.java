@@ -12,8 +12,8 @@ import android.view.View;
 
 public class DaysToWakeUp extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("DaysToWakeUp", "Opened the DaysToWakeUp page.");
         super.onCreate(savedInstanceState);
-        Log.d("debug", "Testing.");
         setContentView(R.layout.days_to_wake_up);
     }
 
