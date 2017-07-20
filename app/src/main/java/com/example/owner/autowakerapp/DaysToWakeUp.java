@@ -18,7 +18,7 @@ public class DaysToWakeUp extends Activity{
     }
 
     public void onButtonClick(View view) {
-        if (view.getId() == R.id.homeButton){
+        if (view.getId() == R.id.homeButton) {
             Intent i = new Intent(this, SleepSetup.class);
             finish();
         }

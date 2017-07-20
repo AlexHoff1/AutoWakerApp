@@ -47,13 +47,12 @@ public class BackgroundRunner extends IntentService implements Runnable {
         try {
             // Continues to execute until the time is met.
             startQuerying(backendLink);
-
             playMusic();
         } catch (Exception e) {
             Log.e("Background", "Unknown exception occured while trying to retrieve the time");
         }
     }
-    private void tryGetResult(BackendLink aLinkToServer){
+    private void tryGetResult(BackendLink aLinkToServer) {
         try {
             aLinkToServer.getResult();
         } catch (Exception e) {
@@ -99,9 +98,8 @@ public class BackgroundRunner extends IntentService implements Runnable {
         // TODO: Clean up the problem here. This currently just waits for result in a super inefficient way. :(.
         waitUntilResultExists(currentTimeString, backendLink);
         // TODO: Seriously patch this up. It is just checking if the time is less than currently.
-        while (currentTimeString.compareTo(backendLink.getResult()) < 0 || currentTimeString.compareTo("12:00:00") > 0) {
+        while (inRange(currentTimeString, backendLink.getResult())) {
             try {
-                // Sleep for two minutes
                 Log.i("Background", "Stalling. Current time is about: " + currentTimeString);
                 Thread.sleep(120 * 1000);
                 currentTimeString = getCurrentTime();
@@ -110,5 +108,9 @@ public class BackgroundRunner extends IntentService implements Runnable {
             }
         }
         return 0;
+    }
+
+    private boolean inRange(String currentTime, String wakeTime) {
+        return currentTime.compareTo(wakeTime) < 0;
     }
 }

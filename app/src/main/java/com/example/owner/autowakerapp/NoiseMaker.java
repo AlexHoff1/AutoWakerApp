@@ -13,7 +13,7 @@ public class NoiseMaker implements Runnable {
     private static MediaPlayer pyromania;
     private SleepSetup sleep = null;
     private static boolean playing;
-    public NoiseMaker(SleepSetup a){
+    public NoiseMaker(SleepSetup a) {
         this.sleep = a;
     }
     @Override

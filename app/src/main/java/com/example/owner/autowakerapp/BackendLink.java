@@ -20,11 +20,10 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
     private String desired;
     private String result = "";
 
-    public BackendLink(String desired){
+    public BackendLink(String desired) {
         this.desired = desired;
     }
 
-    // TODO: Massive patchwork is needed here.
     protected String doInBackground(URL... urls) {
         int count = urls.length;
         for (int i = 0; i < count; i++) {
@@ -32,7 +31,7 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
                 String content = readData(urls[i]);
                 JSONObject obj = new JSONObject(content);
                 this.result = obj.getString(this.desired);
-                Log.i("Time", this.result);
+                Log.i("Time", "Time is: " + this.result);
                 return this.result;
             } catch (org.json.JSONException e) {
                 Log.e("JSON", "The information returned from the URL was not a JSON object. Info:" + e.toString());
@@ -46,7 +45,7 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
         Log.i("Time", "The resulting time is: " + result);
     }
 
-    public String getResult(){
+    public String getResult() {
         refreshResult();
         return this.result;
     }
@@ -56,7 +55,7 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
             String result = doInBackground(new URL("http://192.168.56.1:8888/?date=2017/07/15&user=-"));
             Log.i("Time", "The result of calling doInBackground is: " + result);
         } catch (Exception e) {
-            Log.e("Time", "Unknown exception occured while executing in the background.");
+            Log.e("Time", "Unknown exception occurred while executing in the background.");
         }
     }
 
@@ -69,7 +68,7 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
             Log.e("Read", "Opening the connection failed with: " + e.toString());
             return "";
         } catch (Exception e) {
-            Log.e("Read", "Unknown exception occured when connecting with: " + e.toString());
+            Log.e("Read", "Unknown exception occurred when connecting with: " + e.toString());
             return "";
         }
         Log.i("Time", "URL is: " + url.toString());
@@ -80,7 +79,7 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
             Log.e("Read", "Opening the input stream failed with: " + e.toString());
             return "";
         } catch (Exception e) {
-            Log.e("Read", "Unknown exception occured with: " + e.toString());
+            Log.e("Read", "Unknown exception occurred with: " + e.toString());
             return "";
         }
         String content = "";
@@ -91,12 +90,10 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
             }
         } catch (IOException e) {
             Log.e("Read", "Reading from the connection caused an error: " + e.toString());
-            return content;
         } catch (Exception e) {
-            Log.e("Read", "Unknown error occured while reading with: " + e.toString());
-            return content;
+            Log.e("Read", "Unknown error occurred while reading with: " + e.toString());
         }
-        Log.i("Read", "Content is: " + content);
+        Log.i("Read", "Content from URL " + url + " is: " + content);
         return content;
     }
 }

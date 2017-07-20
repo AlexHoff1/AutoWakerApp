@@ -44,5 +44,6 @@ public class TimeForcer extends Activity {
     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
         // TODO Auto-generated method stub
         String date = String.valueOf(hourOfDay).toString() + ":" + String.valueOf(minute).toString();
+        Log.i("TimeForcer", "Time was changed to: " + date);
     }
 }
