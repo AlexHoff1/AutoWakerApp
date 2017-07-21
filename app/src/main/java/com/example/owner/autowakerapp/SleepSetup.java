@@ -26,8 +26,10 @@ import java.util.Date;
 public class SleepSetup extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private AsyncTask<URL, Integer, String> timeGetter;
-    private MediaPlayer pyromania;
+    private static final String WEBSITE_URL = "http://192.168.56.1:8888/";
+
+    private AsyncTask<URL, Integer, String> time_getter_;
+    private MediaPlayer music_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +53,15 @@ public class SleepSetup extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        NavigationView navigation_view = (NavigationView) findViewById(R.id.nav_view);
+        navigation_view.setNavigationItemSelectedListener(this);
         try {
-            timeGetter = new BackendLink("wakeTime");
-            timeGetter.execute(new URL(retrieveFullURL()));
+            time_getter_ = new BackendLink("wakeTime");
+            time_getter_.execute(new URL(retrieveFullURL()));
         } catch (Exception e) {
             Log.e("Sleep", "Error occurred while creating a backendlink: " + e.toString());
         }
-        BackgroundRunner testing = new BackgroundRunner();
-        this.pyromania = MediaPlayer.create(this, R.raw.daycore_pyromania);
+        this.music_ = MediaPlayer.create(this, R.raw.daycore_pyromania);
     }
 
     public void onButtonClick(View view) {
@@ -71,25 +72,25 @@ public class SleepSetup extends AppCompatActivity
             Log.e("Thread", "Creating thread for noise maker failed with: " + e.toString());
         }
         if (id != 0) {
-            Intent i = new Intent(this, SleepSetup.class);
+            Intent intent = new Intent(this, SleepSetup.class);
             if (id == R.id.syncButton) {
-                i = new Intent(this, BlutoothConnection.class);
+                intent = new Intent(this, BlutoothConnection.class);
             } else if (id == R.id.dateButton) {
-                i = new Intent(this, DaysToWakeUp.class);
+                intent = new Intent(this, DaysToWakeUp.class);
             } else if (id == R.id.homeButton) {
                 try {
-                    i.setData(Uri.parse("http://192.168.56.1:8888/?date=2017/07/15&user=5T23R6"));
+                    intent.setData(Uri.parse("http://192.168.56.1:8888/?date=2017/07/15&user=5T23R6"));
                 } catch (Exception e) {
                     Log.e("background", "Starting background failed." + e.toString());
                 }
                 new Thread(new BackgroundRunner()).start();
                 return;
             } else if (id == R.id.timeButton) {
-                i = new Intent(this, TimeForcer.class);
+                intent = new Intent(this, TimeForcer.class);
             } else if (id == R.id.minHoursButton) {
-                i = new Intent(this, MinHours.class);
+                intent = new Intent(this, MinHours.class);
             }
-            startActivityForResult(i, 100);
+            startActivityForResult(intent, 100);
         } else {
             Log.d("Sleep", "ID was 0.");
         }
@@ -152,7 +153,6 @@ public class SleepSetup extends AppCompatActivity
         return true;
     }
 
-    private static final String WEBSITE_URL = "http://192.168.56.1:8888/";
 
     private String retrieveFullURL() {
         // TODO: Assemble appropriate link and parameters as a URL object, not string ;L
