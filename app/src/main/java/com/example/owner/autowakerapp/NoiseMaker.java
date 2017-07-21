@@ -10,26 +10,28 @@ import android.util.Log;
 
 public class NoiseMaker implements Runnable {
 
-    private static MediaPlayer pyromania;
-    private SleepSetup sleep = null;
-    private static boolean playing;
-    public NoiseMaker(SleepSetup a) {
-        this.sleep = a;
+    private static boolean playing_;
+    private static MediaPlayer music_;
+    private SleepSetup sleep_setup_ = null;
+
+    public NoiseMaker(SleepSetup sleep_setup) {
+        this.sleep_setup_ = sleep_setup;
     }
+
     @Override
     public void run() {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-        if (this.playing) {
+        if (this.playing_) {
             try {
-                this.pyromania.stop();
-                this.playing = false;
+                this.music_.stop();
+                this.playing_ = false;
             } catch (Exception e) {
                 Log.i("NoiseMaker", "Object not yet created.");
             }
         } else {
-            this.pyromania = MediaPlayer.create(sleep, R.raw.daycore_pyromania);
-            this.playing = true;
-            this.pyromania.start();
+            this.music_ = MediaPlayer.create(sleep_setup_, R.raw.daycore_pyromania);
+            this.playing_ = true;
+            this.music_.start();
         }
     }
 }

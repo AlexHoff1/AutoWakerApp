@@ -17,11 +17,11 @@ import org.json.*;
 
 public class BackendLink extends AsyncTask<URL, Integer, String> {
 
-    private String desired;
-    private String result = "";
+    private String desired_;
+    private String url_returned_result_ = "";
 
     public BackendLink(String desired) {
-        this.desired = desired;
+        this.desired_ = desired;
     }
 
     protected String doInBackground(URL... urls) {
@@ -29,16 +29,15 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
         for (int i = 0; i < count; i++) {
             try {
                 String content = readData(urls[i]);
-                JSONObject obj = new JSONObject(content);
-                this.result = obj.getString(this.desired);
-                Log.i("Time", "Time is: " + this.result);
-                return this.result;
+                JSONObject jsonObject = new JSONObject(content);
+                this.url_returned_result_ = jsonObject.getString(this.desired_);
+                Log.i("Time", "Time is: " + this.url_returned_result_);
+                return this.url_returned_result_;
             } catch (org.json.JSONException e) {
                 Log.e("JSON", "The information returned from the URL was not a JSON object. Info:" + e.toString());
             }
-            return this.result;
         }
-        return this.result;
+        return this.url_returned_result_;
     }
 
     protected void onPostExecute(String result) {
@@ -47,23 +46,23 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
 
     public String getResult() {
         refreshResult();
-        return this.result;
+        return this.url_returned_result_;
     }
 
     public void refreshResult() {
         try {
-            String result = doInBackground(new URL("http://192.168.56.1:8888/?date=2017/07/15&user=-"));
-            Log.i("Time", "The result of calling doInBackground is: " + result);
+            String url_returned_result_ = doInBackground(new URL("http://192.168.56.1:8888/?date=2017/07/15&user=-"));
+            Log.i("Time", "The result of calling doInBackground is: " + url_returned_result_);
         } catch (Exception e) {
             Log.e("Time", "Unknown exception occurred while executing in the background.");
         }
     }
 
     private String readData(URL url) {
-        BufferedReader br;
-        URLConnection conn;
+        BufferedReader bufferedReader;
+        URLConnection connection;
         try {
-            conn = url.openConnection();
+            connection = url.openConnection();
         } catch (IOException e) {
             Log.e("Read", "Opening the connection failed with: " + e.toString());
             return "";
@@ -73,8 +72,8 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
         }
         Log.i("Time", "URL is: " + url.toString());
         try {
-            br = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
+            bufferedReader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
         } catch (IOException e) {
             Log.e("Read", "Opening the input stream failed with: " + e.toString());
             return "";
@@ -82,11 +81,11 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
             Log.e("Read", "Unknown exception occurred with: " + e.toString());
             return "";
         }
-        String content = "";
+        StringBuilder content = new StringBuilder();
         String line = "";
         try {
-            while ((line = br.readLine()) != null) {
-                content += line;
+            while ((line = bufferedReader.readLine()) != null) {
+                content.append(line);
             }
         } catch (IOException e) {
             Log.e("Read", "Reading from the connection caused an error: " + e.toString());
@@ -94,6 +93,6 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
             Log.e("Read", "Unknown error occurred while reading with: " + e.toString());
         }
         Log.i("Read", "Content from URL " + url + " is: " + content);
-        return content;
+        return content.toString();
     }
 }

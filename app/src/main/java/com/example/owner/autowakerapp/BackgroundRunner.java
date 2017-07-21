@@ -20,7 +20,6 @@ public class BackgroundRunner extends IntentService implements Runnable {
 
     public BackgroundRunner(String name) {
         super(name);
-        // TODO Auto-generated constructor stub
     }
 
     /*
@@ -40,31 +39,28 @@ public class BackgroundRunner extends IntentService implements Runnable {
     @Override
     protected void onHandleIntent(Intent workIntent) {
 
-        BackendLink backendLink = new BackendLink("wakeTime");
-        tryGetResult(backendLink);
+        BackendLink backend_link = new BackendLink("wakeTime");
+        tryGetResult(backend_link);
 
         Log.i("Background", "Link established, trying to run.");
         try {
             // Continues to execute until the time is met.
-            startQuerying(backendLink);
+            startQuerying(backend_link);
             playMusic();
         } catch (Exception e) {
             Log.e("Background", "Unknown exception occured while trying to retrieve the time");
         }
     }
-    private void tryGetResult(BackendLink aLinkToServer) {
+    private void tryGetResult(BackendLink a_link_to_server) {
         try {
-            aLinkToServer.getResult();
+            a_link_to_server.getResult();
         } catch (Exception e) {
             Log.e("Background", "Getting the result from the backend failed.");
         }
     }
 
-    private String getCurrentTime(){
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String currentTime = sdf.format(cal.getTime());
-        return currentTime;
+    private String getCurrentTime() {
+        return (new SimpleDateFormat("HH:mm:ss")).format(Calendar.getInstance().getTime());
     }
 
     private void waitUntilResultExists(String currentTime, BackendLink backendLink) {
@@ -72,14 +68,14 @@ public class BackgroundRunner extends IntentService implements Runnable {
         while(true){
             try {
                 int result = currentTime.compareTo(backendLink.getResult());
-                break;  // Result isn't null since that didn't toss an erorr.
+                break;  // Result isn't null since that didn't toss an error.
             } catch (Exception e) {
                 Log.i("Background", "Result doesn't exist yet, stalling the thread.");
                 try {
                     // TODO: Find more useful stuff to do and optimize the ping time.
                     Thread.sleep(120);
-                } catch (Exception e2) {
-                    Log.i("Background", "Sleep was interrupted " + e2.toString());
+                } catch (Exception nested_exception) {
+                    Log.i("Background", "Sleep was interrupted " + nested_exception.toString());
                 }
             }
         }
@@ -88,21 +84,21 @@ public class BackgroundRunner extends IntentService implements Runnable {
     //TODO: Threading
     private void playMusic() {
         // TODO: Arbitrary choice of music?
-        final MediaPlayer pyromania = MediaPlayer.create(this, R.raw.daycore_pyromania);
-        pyromania.start();
+        final MediaPlayer music = MediaPlayer.create(this, R.raw.daycore_pyromania);
+        music.start();
     }
 
-    private int startQuerying(BackendLink backendLink) {
+    private int startQuerying(BackendLink backend_link) {
         // TODO: Use datetime objects and DT comparison similar to python.
-        String currentTimeString = getCurrentTime();
+        String current_time_string = getCurrentTime();
         // TODO: Clean up the problem here. This currently just waits for result in a super inefficient way. :(.
-        waitUntilResultExists(currentTimeString, backendLink);
+        waitUntilResultExists(current_time_string, backend_link);
         // TODO: Seriously patch this up. It is just checking if the time is less than currently.
-        while (inRange(currentTimeString, backendLink.getResult())) {
+        while (inRange(current_time_string, backend_link.getResult())) {
             try {
-                Log.i("Background", "Stalling. Current time is about: " + currentTimeString);
+                Log.i("Background", "Stalling. Current time is about: " + current_time_string);
                 Thread.sleep(120 * 1000);
-                currentTimeString = getCurrentTime();
+                current_time_string = getCurrentTime();
             } catch (Exception e) {
                 Log.i("Background", "Sleep was interrupted " + e.toString());
             }
@@ -110,7 +106,7 @@ public class BackgroundRunner extends IntentService implements Runnable {
         return 0;
     }
 
-    private boolean inRange(String currentTime, String wakeTime) {
-        return currentTime.compareTo(wakeTime) < 0;
+    private boolean inRange(String current_time, String wake_time) {
+        return current_time.compareTo(wake_time) < 0;
     }
 }

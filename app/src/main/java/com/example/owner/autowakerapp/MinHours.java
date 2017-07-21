@@ -12,13 +12,13 @@ import android.view.View;
 
 public class MinHours extends Activity{
 
-    private double minHours = 5;
-    private int maximumMinHours = 12;
-    private int minimumMinHours = 5;
+    private double min_hours_ = 5.0;
+    private double maximum_min_hours_ = 12.0;
+    private double minimum_min_hours_ = 5.0;
 
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle saved_instance_state) {
         Log.i("MinHours", "Opened the MinHours setting page.");
-        super.onCreate(savedInstanceState);
+        super.onCreate(saved_instance_state);
         setContentView(R.layout.min_hours);
     }
 
@@ -30,19 +30,19 @@ public class MinHours extends Activity{
     }
 
     public double getMinHours() {
-        return minHours;
+        return min_hours_;
     }
 
-    public void setMinHours( double minHours ) {
-        if (hoursInRange(minHours)){
-            this.minHours = minHours;
+    public void setMinHours( double min_hours ) {
+        if (hoursInRange(min_hours_)){
+            this.min_hours_ = min_hours;
         } else {
             // TODO: Send message back up.
         }
 
     }
 
-    private boolean hoursInRange(double minHours){
-        return ( ( minHours >= minimumMinHours ) && (minHours <= maximumMinHours) );
+    private boolean hoursInRange(double min_hours){
+        return ( ( min_hours >= minimum_min_hours_ ) && (min_hours <= maximum_min_hours_) );
     }
 }

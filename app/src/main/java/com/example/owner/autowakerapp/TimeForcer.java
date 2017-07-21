@@ -16,18 +16,18 @@ import android.widget.TextView;
  */
 
 public class TimeForcer extends Activity {
-    TextView time;
-    TimePicker simpleTimePicker;
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private TextView time_;
+    private TimePicker simple_time_picker_;
+    protected void onCreate(Bundle saved_instance_state) {
+        super.onCreate(saved_instance_state);
         setContentView(R.layout.time_forcer);
-        time = (TextView) findViewById(R.id.time);
-        simpleTimePicker = (TimePicker)findViewById(R.id.timePicker); //initiate a time picker
-        simpleTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+        time_ = (TextView) findViewById(R.id.time);
+        simple_time_picker_ = (TimePicker)findViewById(R.id.timePicker); //initiate a time picker
+        simple_time_picker_.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             //@Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                Log.i("Time", hourOfDay + " " + minute);
-                Toast.makeText(getApplicationContext(), hourOfDay + "  " + minute, Toast.LENGTH_SHORT).show();
+            public void onTimeChanged(TimePicker view, int hour_of_day, int minute) {
+                Log.i("Time", hour_of_day + " " + minute);
+                Toast.makeText(getApplicationContext(), hour_of_day + "  " + minute, Toast.LENGTH_SHORT).show();
                 //time.setText("Time is :: " + hourOfDay + " : " + minute); // set the current time in text view
             }
         });
@@ -41,9 +41,9 @@ public class TimeForcer extends Activity {
     }
 
 
-    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+    public void onTimeChanged(TimePicker view, int hour_of_day, int minute) {
         // TODO Auto-generated method stub
-        String date = String.valueOf(hourOfDay).toString() + ":" + String.valueOf(minute).toString();
+        String date = String.valueOf(hour_of_day).toString() + ":" + String.valueOf(minute).toString();
         Log.i("TimeForcer", "Time was changed to: " + date);
     }
 }
