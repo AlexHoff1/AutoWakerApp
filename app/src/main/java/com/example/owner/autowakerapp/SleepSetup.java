@@ -69,7 +69,7 @@ public class SleepSetup extends AppCompatActivity
         try {
             new Thread(new NoiseMaker(this)).start();
         } catch (Exception e) {
-            Log.e("Thread", "Creating thread for noise maker failed with: " + e.toString());
+            Log.e("Main", "Creating thread for noise maker failed with: " + e.toString());
         }
         if (id != 0) {
             Intent intent = new Intent(this, SleepSetup.class);
@@ -77,23 +77,28 @@ public class SleepSetup extends AppCompatActivity
                 intent = new Intent(this, BlutoothConnection.class);
             } else if (id == R.id.dateButton) {
                 intent = new Intent(this, DaysToWakeUp.class);
-            } else if (id == R.id.homeButton) {
-                try {
-                    intent.setData(Uri.parse("http://192.168.56.1:8888/?date=2017/07/15&user=5T23R6"));
-                } catch (Exception e) {
-                    Log.e("background", "Starting background failed." + e.toString());
-                }
-                new Thread(new BackgroundRunner()).start();
-                return;
             } else if (id == R.id.timeButton) {
                 intent = new Intent(this, TimeForcer.class);
             } else if (id == R.id.minHoursButton) {
                 intent = new Intent(this, MinHours.class);
+            } else {
+                // By default set the home button and check whether or not they are syncing.
+                return;
+            }
+            if (intent == null) {
+                return;
             }
             startActivityForResult(intent, 100);
         } else {
-            Log.d("Sleep", "ID was 0.");
+            Log.d("Main", "ID was 0.");
         }
+    }
+
+    public void onToggle() {
+        Intent intent = new Intent(this, SleepSetup.class);
+        intent.setData(Uri.parse(retrieveFullURL()));
+        new Thread(new BackgroundRunner()).start();
+        return;
     }
 
     @Override
@@ -164,11 +169,8 @@ public class SleepSetup extends AppCompatActivity
     }
 
     private String getCurrentDate() {
-        // TODO: Clean this up
         DateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
-        Date date = new Date();
-        String date_string = date_format.format(date);
-        return date_string;
+        return date_format.format(new Date());
     }
 
     private String getCurrentUser() {
