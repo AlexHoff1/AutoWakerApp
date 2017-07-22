@@ -158,7 +158,6 @@ public class SleepSetup extends AppCompatActivity
         return true;
     }
 
-
     private String retrieveFullURL() {
         // TODO: Assemble appropriate link and parameters as a URL object, not string ;L
         String date = getCurrentDate();

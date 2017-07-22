@@ -14,6 +14,8 @@ import java.util.Calendar;
  */
 
 public class BackgroundRunner extends IntentService implements Runnable {
+    private static boolean running_;
+    private static int SLEEP_DURATION = 120*1000;  // Sleep duration in milliseconds.
     public BackgroundRunner() {
         super("BackgroundRunner");
     }
@@ -38,17 +40,23 @@ public class BackgroundRunner extends IntentService implements Runnable {
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-
+        if (this.running_) {
+            return;
+        }
         BackendLink backend_link = new BackendLink("wakeTime");
         tryGetResult(backend_link);
 
         Log.i("Background", "Link established, trying to run.");
-        try {
-            // Continues to execute until the time is met.
-            startQuerying(backend_link);
-            //playMusic();
-        } catch (Exception e) {
-            Log.e("Background", "Unknown exception occurred while trying to retrieve the time");
+        while (true) {
+            this.running_ = true;
+            try {
+                // Continues to execute until the time is met.
+                startQuerying(backend_link);
+                Thread.sleep(SLEEP_DURATION);
+                //playMusic();
+            } catch (Exception e) {
+                Log.e("Background", "Unknown exception occurred while trying to retrieve the time");
+            }
         }
     }
     private void tryGetResult(BackendLink a_link_to_server) {
