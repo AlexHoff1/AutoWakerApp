@@ -46,9 +46,9 @@ public class BackgroundRunner extends IntentService implements Runnable {
         try {
             // Continues to execute until the time is met.
             startQuerying(backend_link);
-            playMusic();
+            //playMusic();
         } catch (Exception e) {
-            Log.e("Background", "Unknown exception occured while trying to retrieve the time");
+            Log.e("Background", "Unknown exception occurred while trying to retrieve the time");
         }
     }
     private void tryGetResult(BackendLink a_link_to_server) {
@@ -84,13 +84,14 @@ public class BackgroundRunner extends IntentService implements Runnable {
     //TODO: Threading
     private void playMusic() {
         // TODO: Arbitrary choice of music?
-        final MediaPlayer music = MediaPlayer.create(this, R.raw.daycore_pyromania);
+        MediaPlayer music = MediaPlayer.create(this, R.raw.daycore_pyromania);
         music.start();
     }
 
     private int startQuerying(BackendLink backend_link) {
         // TODO: Use datetime objects and DT comparison similar to python.
         String current_time_string = getCurrentTime();
+        Log.i("Background", "Current time is: " + current_time_string);
         // TODO: Clean up the problem here. This currently just waits for result in a super inefficient way. :(.
         waitUntilResultExists(current_time_string, backend_link);
         // TODO: Seriously patch this up. It is just checking if the time is less than currently.
