@@ -94,7 +94,7 @@ public class SleepSetup extends AppCompatActivity
         }
     }
 
-    public void onToggle() {
+    public void onToggle(View view) {
         Intent intent = new Intent(this, SleepSetup.class);
         intent.setData(Uri.parse(retrieveFullURL()));
         new Thread(new BackgroundRunner()).start();
