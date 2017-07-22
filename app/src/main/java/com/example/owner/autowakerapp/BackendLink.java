@@ -19,6 +19,7 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
 
     private String desired_;
     private String url_returned_result_ = "";
+    private String WEBSITE_URL = "http://192.168.56.1:8888/";
 
     public BackendLink(String desired) {
         this.desired_ = desired;
@@ -51,7 +52,7 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
 
     public void refreshResult() {
         try {
-            String url_returned_result_ = doInBackground(new URL("http://192.168.56.1:8888/?date=2017/07/15&user=-"));
+            String url_returned_result_ = doInBackground(new URL(retrieveFullURL()));
             Log.i("Time", "The result of calling doInBackground is: " + url_returned_result_);
         } catch (Exception e) {
             Log.e("Time", "Unknown exception occurred while executing in the background.");
@@ -94,5 +95,24 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
         }
         Log.i("Read", "Content from URL " + url + " is: " + content);
         return content.toString();
+    }
+
+    private String retrieveFullURL() {
+        // TODO: Assemble appropriate link and parameters as a URL object, not string ;L
+        String date = getCurrentDate();
+        String current_user = getCurrentUser();
+        //Path filePath = Paths.get(WEBSITE_URL, "sleep", current_user, date);
+        //return filePath.toString();
+        return WEBSITE_URL + "?date=" + date + "&user=" + current_user;
+    }
+
+    private String getCurrentDate() {
+        DateFormat date_format = new SimpleDateFormat("yyyy/MM/dd");
+        return date_format.format(new Date());
+    }
+
+    private String getCurrentUser() {
+        // TODO: Extract user from some config
+        return "5T23R6";
     }
 }
