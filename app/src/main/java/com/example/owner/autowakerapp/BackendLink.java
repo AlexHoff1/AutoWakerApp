@@ -46,7 +46,6 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
     }
 
     public String getResult() {
-        refreshResult();
         return this.url_returned_result_;
     }
 
