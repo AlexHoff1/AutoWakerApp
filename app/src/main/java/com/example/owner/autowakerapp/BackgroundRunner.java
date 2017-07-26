@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 public class BackgroundRunner extends IntentService implements Runnable {
     private static boolean running_;
+    private static boolean toggled_;
     private static int SLEEP_DURATION = 120*1000;  // Sleep duration in milliseconds.
     public BackgroundRunner() {
         super("BackgroundRunner");
@@ -22,6 +23,11 @@ public class BackgroundRunner extends IntentService implements Runnable {
 
     public BackgroundRunner(String name) {
         super(name);
+    }
+
+    public BackgroundRunner(boolean toggled) {
+        this();
+        this.toggled_ = toggled;
     }
 
     /*
@@ -47,13 +53,12 @@ public class BackgroundRunner extends IntentService implements Runnable {
         tryGetResult(backend_link);
 
         Log.i("Background", "Link established, trying to run.");
-        while (true) {
+        while (this.toggled_) {
             this.running_ = true;
             try {
                 // Continues to execute until the time is met.
                 startQuerying(backend_link);
                 Thread.sleep(SLEEP_DURATION);
-                //playMusic();
             } catch (Exception e) {
                 Log.e("Background", "Unknown exception occurred while trying to retrieve the time");
             }
@@ -61,7 +66,9 @@ public class BackgroundRunner extends IntentService implements Runnable {
     }
     private void tryGetResult(BackendLink a_link_to_server) {
         try {
+            a_link_to_server.refreshResult();
             a_link_to_server.getResult();
+            Thread.sleep(1000);
         } catch (Exception e) {
             Log.e("Background", "Getting the result from the backend failed.");
         }
@@ -71,11 +78,11 @@ public class BackgroundRunner extends IntentService implements Runnable {
         return (new SimpleDateFormat("HH:mm:ss")).format(Calendar.getInstance().getTime());
     }
 
-    private void waitUntilResultExists(String currentTime, BackendLink backendLink) {
+    private void waitUntilResultExists(String current_time, BackendLink backend_link) {
         Log.i("Background", "Waiting until result is here.");
         while(true){
             try {
-                int result = currentTime.compareTo(backendLink.getResult());
+                int result = current_time.compareTo(backend_link.getResult());
                 break;  // Result isn't null since that didn't toss an error.
             } catch (Exception e) {
                 Log.i("Background", "Result doesn't exist yet, stalling the thread.");
@@ -104,14 +111,18 @@ public class BackgroundRunner extends IntentService implements Runnable {
         waitUntilResultExists(current_time_string, backend_link);
         // TODO: Seriously patch this up. It is just checking if the time is less than currently.
         while (inRange(current_time_string, backend_link.getResult())) {
+            Log.i("Background", "Time was in range.");
             try {
                 Log.i("Background", "Stalling. Current time is about: " + current_time_string);
                 Thread.sleep(120 * 1000);
                 current_time_string = getCurrentTime();
+                backend_link.refreshResult();
             } catch (Exception e) {
                 Log.i("Background", "Sleep was interrupted " + e.toString());
             }
         }
+        playMusic();
+        Log.i("Background", "Time to wake up :D");
         return 0;
     }
 

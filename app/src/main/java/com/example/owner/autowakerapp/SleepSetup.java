@@ -94,10 +94,12 @@ public class SleepSetup extends AppCompatActivity
         }
     }
 
+    private static boolean toggled = false;
     public void onToggle(View view) {
+        toggled = !toggled;
         Intent intent = new Intent(this, SleepSetup.class);
         intent.setData(Uri.parse(retrieveFullURL()));
-        new Thread(new BackgroundRunner()).start();
+        new Thread(new BackgroundRunner(this.toggled)).start();
         return;
     }
 
