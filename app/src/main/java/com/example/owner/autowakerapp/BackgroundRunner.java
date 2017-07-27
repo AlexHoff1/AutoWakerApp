@@ -126,7 +126,8 @@ public class BackgroundRunner extends IntentService implements Runnable {
         return 0;
     }
 
+    // Is the time less than the wake time or greater than noon (hard coded cycle start time).
     private boolean inRange(String current_time, String wake_time) {
-        return current_time.compareTo(wake_time) < 0;
+        return current_time.compareTo(wake_time) < 0 && current_time.compareTo("12:00:00") > 0;
     }
 }
