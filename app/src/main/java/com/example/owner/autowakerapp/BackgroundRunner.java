@@ -60,9 +60,15 @@ public class BackgroundRunner extends IntentService implements Runnable {
                 startQuerying(backend_link);
                 Thread.sleep(SLEEP_DURATION);
             } catch (Exception e) {
-                Log.e("Background", "Unknown exception occurred while trying to retrieve the time");
+                try {
+                    Thread.sleep(SLEEP_DURATION);
+                } catch (InterruptedException interupt) {
+                    Log.i("Sleep", "Sleep was interrupted.");
+                }
+                Log.e("Background", "Unknown exception occurred while querying the backend");
             }
         }
+        this.running_ = false;
     }
     private void tryGetResult(BackendLink a_link_to_server) {
         try {
