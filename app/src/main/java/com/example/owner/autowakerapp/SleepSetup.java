@@ -17,12 +17,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.net.Uri.Builder;
 
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 public class SleepSetup extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -96,11 +96,11 @@ public class SleepSetup extends AppCompatActivity
 
     private static boolean toggled = false;
     public void onToggle(View view) {
+        // Obviously the toggle has to flip if onToggle is called.
         toggled = !toggled;
         Intent intent = new Intent(this, SleepSetup.class);
         intent.setData(Uri.parse(retrieveFullURL()));
         new Thread(new BackgroundRunner(this.toggled)).start();
-        return;
     }
 
     @Override
@@ -164,9 +164,14 @@ public class SleepSetup extends AppCompatActivity
         // TODO: Assemble appropriate link and parameters as a URL object, not string ;L
         String date = getCurrentDate();
         String current_user = getCurrentUser();
-        //Path filePath = Paths.get(WEBSITE_URL, "sleep", current_user, date);
-        //return filePath.toString();
-        return WEBSITE_URL + "?date=" + date + "&user=" + current_user;
+        Builder builder = new Builder();
+        builder.scheme("https");
+        builder.path(WEBSITE_URL);
+        //builder.appendPath("/foldername/1234");
+        builder.appendQueryParameter("date", date);
+        builder.appendQueryParameter("user", current_user);
+        return builder.toString();
+        //return WEBSITE_URL + "?date=" + date + "&user=" + current_user;
     }
 
     private String getCurrentDate() {
