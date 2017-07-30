@@ -46,6 +46,7 @@ public class BackgroundRunner extends IntentService implements Runnable {
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
+        // TODO: Threadsafe
         if (this.running_) {
             return;
         }
@@ -62,7 +63,7 @@ public class BackgroundRunner extends IntentService implements Runnable {
             } catch (Exception e) {
                 try {
                     Thread.sleep(SLEEP_DURATION);
-                } catch (InterruptedException interupt) {
+                } catch (InterruptedException interrupt) {
                     Log.i("Sleep", "Sleep was interrupted.");
                 }
                 Log.e("Background", "Unknown exception occurred while querying the backend");
