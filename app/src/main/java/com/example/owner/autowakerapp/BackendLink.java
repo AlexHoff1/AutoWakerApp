@@ -27,16 +27,15 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
 
     protected String doInBackground(URL... urls) {
         int count = urls.length;
-        for (int i = 0; i < count; i++) {
-            try {
-                String content = readData(urls[i]);
-                JSONObject jsonObject = new JSONObject(content);
-                this.url_returned_result_ = jsonObject.getString(this.desired_);
-                Log.i("Time", "Time is: " + this.url_returned_result_);
-                return this.url_returned_result_;
-            } catch (org.json.JSONException e) {
-                Log.e("JSON", "The information returned from the URL was not a JSON object. Info:" + e.toString());
-            }
+        URL url = urls[0];
+        try {
+            String content = readData(url);
+            JSONObject jsonObject = new JSONObject(content);
+            this.url_returned_result_ = jsonObject.getString(this.desired_);
+            Log.i("Time", "Time is: " + this.url_returned_result_);
+            return this.url_returned_result_;
+        } catch (org.json.JSONException e) {
+            Log.e("JSON", "The information returned from the URL was not a JSON object. Info:" + e.toString());
         }
         return this.url_returned_result_;
     }
