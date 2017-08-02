@@ -161,15 +161,11 @@ public class SleepSetup extends AppCompatActivity
     }
 
     private String retrieveFullURL() {
-        // TODO: Assemble appropriate link and parameters as a URL object, not string ;L
-        String date = getCurrentDate();
-        String current_user = getCurrentUser();
         Builder builder = new Builder();
         builder.scheme("https");
         builder.path(WEBSITE_URL);
-        //builder.appendPath("/foldername/1234");
-        builder.appendQueryParameter("date", date);
-        builder.appendQueryParameter("user", current_user);
+        builder.appendQueryParameter("date", getCurrentDate());
+        builder.appendQueryParameter("user", getCurrentUser());
         return builder.toString();
         //return WEBSITE_URL + "?date=" + date + "&user=" + current_user;
     }
