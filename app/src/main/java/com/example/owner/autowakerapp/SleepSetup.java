@@ -94,13 +94,13 @@ public class SleepSetup extends AppCompatActivity
         }
     }
 
-    private static boolean toggled = false;
+    private static boolean toggled_ = false;
     public void onToggle(View view) {
         // Obviously the toggle has to flip if onToggle is called.
-        toggled = !toggled;
+        this.toggled_ = !this.toggled_;
         Intent intent = new Intent(this, SleepSetup.class);
         intent.setData(Uri.parse(retrieveFullURL()));
-        new Thread(new BackgroundRunner(this.toggled)).start();
+        new Thread(new BackgroundRunner(this.toggled_)).start();
     }
 
     @Override
