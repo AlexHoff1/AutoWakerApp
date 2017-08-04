@@ -166,7 +166,9 @@ public class SleepSetup extends AppCompatActivity
         builder.path(WEBSITE_URL);
         builder.appendQueryParameter("date", getCurrentDate());
         builder.appendQueryParameter("user", getCurrentUser());
-        return builder.toString();
+        String url_full_string = builder.toString();
+        Log.i("URL", "Full url is: " + url_full_string);
+        return url_full_string;
         //return WEBSITE_URL + "?date=" + date + "&user=" + current_user;
     }
 
