@@ -17,6 +17,8 @@ public class BackgroundRunner extends IntentService implements Runnable {
     private static boolean running_;
     private static boolean toggled_;
     private static int SLEEP_DURATION = 120*1000;  // Sleep duration in milliseconds.
+    private final int CHECK_DURATION = 120;
+    
     public BackgroundRunner() {
         super("BackgroundRunner");
     }
@@ -69,6 +71,7 @@ public class BackgroundRunner extends IntentService implements Runnable {
                 Log.e("Background", "Unknown exception occurred while querying the backend");
             }
         }
+        Log.i("Background", "Finished running.");
         this.running_ = false;
     }
     private void tryGetResult(BackendLink a_link_to_server) {
@@ -81,6 +84,7 @@ public class BackgroundRunner extends IntentService implements Runnable {
         }
     }
 
+    // Returns the current time.
     private String getCurrentTime() {
         return (new SimpleDateFormat("HH:mm:ss")).format(Calendar.getInstance().getTime());
     }
@@ -95,7 +99,7 @@ public class BackgroundRunner extends IntentService implements Runnable {
                 Log.i("Background", "Result doesn't exist yet, stalling the thread.");
                 try {
                     // TODO: Find more useful stuff to do and optimize the ping time.
-                    Thread.sleep(120);
+                    Thread.sleep(CHECK_DURATION);
                 } catch (Exception nested_exception) {
                     Log.i("Background", "Sleep was interrupted " + nested_exception.toString());
                 }
