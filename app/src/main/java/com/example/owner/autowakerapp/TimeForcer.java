@@ -42,8 +42,9 @@ public class TimeForcer extends Activity {
 
 
     public void onTimeChanged(TimePicker view, int hour_of_day, int minute) {
-        // TODO Auto-generated method stub
         String date = String.valueOf(hour_of_day).toString() + ":" + String.valueOf(minute).toString();
         Log.i("TimeForcer", "Time was changed to: " + date);
+        BackendLink sender = new BackendLink("date");
+        sender.send("sleepTime", date);
     }
 }
