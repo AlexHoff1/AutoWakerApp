@@ -99,8 +99,6 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
         // TODO: Assemble appropriate link and parameters as a URL object, not string ;L
         String date = getCurrentDate();
         String current_user = getCurrentUser();
-        //Path filePath = Paths.get(WEBSITE_URL, "sleep", current_user, date);
-        //return filePath.toString();
         return WEBSITE_URL + "?date=" + date + "&user=" + current_user;
     }
 
@@ -112,5 +110,12 @@ public class BackendLink extends AsyncTask<URL, Integer, String> {
     private String getCurrentUser() {
         // TODO: Extract user from some config
         return "5T23R6";
+    }
+
+    // Send the result to server
+    public void send(String parameter, String content) {
+        String url = retrieveFullURL();
+        String new_url = url + "&" + parameter + "=" + content;
+        //execute
     }
 }
