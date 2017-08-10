@@ -96,8 +96,10 @@ public class BackgroundRunner extends IntentService implements Runnable {
         Log.i("Background", "Waiting until result is here.");
         while(true){
             try {
+                // If result isn't null then it should exist.
                 int result = current_time.compareTo(backend_link.getResult());
-                break;  // Result isn't null since that didn't toss an error.
+                Log.i("Background", "Result exists.");
+                break;
             } catch (Exception e) {
                 Log.i("Background", "Result doesn't exist yet, stalling the thread.");
                 try {
