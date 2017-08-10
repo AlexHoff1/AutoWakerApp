@@ -37,7 +37,8 @@ public class MinHours extends Activity{
         if (hoursInRange(min_hours_)){
             this.min_hours_ = min_hours;
         } else {
-            // TODO: Send message back up.
+            BackendLink sender = new BackendLink("minHours");
+            sender.send("minHours","" + ((int)this.min_hours_));
         }
 
     }
