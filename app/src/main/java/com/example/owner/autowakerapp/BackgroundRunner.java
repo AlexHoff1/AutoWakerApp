@@ -18,7 +18,7 @@ public class BackgroundRunner extends IntentService implements Runnable {
     private static boolean toggled_;
     private static int SLEEP_DURATION = 120*1000;  // Sleep duration in milliseconds.
     private final int CHECK_DURATION = 120;
-    
+
     public BackgroundRunner() {
         super("BackgroundRunner");
     }
@@ -75,12 +75,15 @@ public class BackgroundRunner extends IntentService implements Runnable {
         this.running_ = false;
     }
     private void tryGetResult(BackendLink a_link_to_server) {
-        try {
-            a_link_to_server.refreshResult();
-            a_link_to_server.getResult();
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            Log.e("Background", "Getting the result from the backend failed.");
+        String result = null;
+        while (result == null) {
+            try {
+                a_link_to_server.refreshResult();
+                result = a_link_to_server.getResult();
+                Thread.sleep(CHECK_DURATION);
+            } catch (Exception e) {
+                Log.i("Background", "Waiting on result.");
+            }
         }
     }
 
