@@ -26,7 +26,7 @@ import java.util.Date;
 public class SleepSetup extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String WEBSITE_URL = "http://192.168.56.1:8888/";
+    private static final String WEBSITE_URL = "/192.168.56.1:8888/";
 
     private AsyncTask<URL, Integer, String> time_getter_;
     private MediaPlayer music_;
