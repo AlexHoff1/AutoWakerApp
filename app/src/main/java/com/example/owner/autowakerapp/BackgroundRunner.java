@@ -138,6 +138,7 @@ public class BackgroundRunner extends IntentService implements Runnable {
             }
         }
         playMusic();
+        playMusic();
         Log.i("Background", "Time to wake up :D");
         return 0;
     }
